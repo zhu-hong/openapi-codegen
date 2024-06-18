@@ -10,21 +10,14 @@ import { writeFile } from 'fs/promises'
 
 const INTERFACE_PREFIX = 'I'
 
-const isRefObj = (schema) => {
-  if(Object.hasOwnProperty.call(schema, '$ref')) {
-    return schema['$ref']
-  }
-  return false
-}
+const isRefObj = (schema) => Object.hasOwnProperty.call(schema, '$ref') ? schema['$ref'] : false
 
 const fieldWithNameAndRequired = (name, required, typeString) => name ? `${name}${required?'':'?'}: ${typeString};` : typeString
 
 /**
  * @description 获取tag,从restfulAPI的规范出发,可以理解为有多少种tag就有多少种resource
  */
-const getTags = () => {
-  return swagger.tags.map(({ name }) => name)
-}
+const getTags = () => swagger.tags.map(({ name }) => name)
 
 /**
  * @description 根据tag来筛选出API路径和方法,以此来得出所有的api和请求需要的参数,响应的数据的数据模型
@@ -35,7 +28,7 @@ const getPathsByTag = (tag) => Object.keys(swagger.paths).map((path) => ({
 })).filter((p) => p.methods.length > 0)
 
 /**
- * 简单递归下,解出所有字段/类型
+ * @description 简单递归下,解出所有字段及其类型
  */
 const parseSchemaObj = (schema, name, required = false) => {
   const refObj = isRefObj(schema)
