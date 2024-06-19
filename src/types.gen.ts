@@ -86,7 +86,6 @@ export interface IPostPetByPetidPayload {
      * @description Name of pet that needs to be updated
      */
     name?: string
-
     /**
      * @description Status of pet that needs to be updated
      */
